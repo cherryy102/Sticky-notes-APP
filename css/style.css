@@ -121,6 +121,7 @@ body {
   border: none;
   background-color: transparent;
   resize: vertical;
+  overflow: hidden;
   color: white;
   font-family: arial;
 }
