@@ -1,7 +1,9 @@
 const notes = document.querySelector('.notes');
 const notesBar = document.querySelector('.notes__top-bar');
-let width;
-let height;
+
+let savePositionX;
+let savePositionY;
+
 if (JSON.parse(localStorage.getItem('notesPositionX')) != null) {
     savePositionX = JSON.parse(localStorage.getItem('notesPositionX'));
     savePositionY = JSON.parse(localStorage.getItem('notesPositionY'))
@@ -26,7 +28,6 @@ function localStorageTest() {
 }
 const startMove = function(e) {
     active = !active;
-    // e.target.style.backgroundColor = 'grey';
     insertX = e.offsetX;
     insertY = e.offsetY;
 }
@@ -40,12 +41,11 @@ const moving = function(e) {
 }
 const endMove = function(e) {
         active = !active;
-        // e.target.style.backgroundColor = 'black';
         //sprawdzanie czy mozna korzystac z localstorage
-
-        localStorage.setItem('notesPositionX', JSON.stringify(notesX));
-        localStorage.setItem('notesPositionY', JSON.stringify(notesY));
-
+        if (localStorageTest()) {
+            localStorage.setItem('notesPositionX', JSON.stringify(notesX));
+            localStorage.setItem('notesPositionY', JSON.stringify(notesY));
+        }
     }
     //wywolanie
 notesBar.addEventListener('mousedown', startMove);
