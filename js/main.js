@@ -1,3 +1,4 @@
+//moveing notes
 const notes = document.querySelector('.notes');
 const notesBar = document.querySelector('.notes__top-bar');
 
@@ -51,3 +52,5 @@ const endMove = function(e) {
 notesBar.addEventListener('mousedown', startMove);
 document.addEventListener('mousemove', moving)
 notesBar.addEventListener('mouseup', endMove)
+
+//save text
