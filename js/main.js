@@ -7,7 +7,6 @@ if (localStorage.getItem('widthX') !== null) {
     div.style.top = `${height}px`;
     div.style.left = `${width}px`;
 }
-
 let active = false;
 let divX = 0;
 let divY = 0;
@@ -45,7 +44,5 @@ div.addEventListener('mouseup', (e) => {
     if (localStorageTest()) {
         localStorage.setItem('widthX', divX);
         localStorage.setItem('heightY', divY);
-    } else {
-        alert('cju');
     }
 })
