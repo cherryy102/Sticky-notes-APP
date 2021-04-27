@@ -1,1 +1,12 @@
-/* No CSS *//*# sourceMappingURL=style.css.map */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+div {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  background-color: black;
+}
+/*# sourceMappingURL=style.css.map */
