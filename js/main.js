@@ -23,26 +23,30 @@ function localStorageTest() {
         return false;
     }
 }
-div.addEventListener('mousedown', (e) => {
+const startMove = function(e) {
     active = !active;
     e.target.style.backgroundColor = 'grey';
     insertX = e.offsetX;
     insertY = e.offsetY;
-})
-document.addEventListener('mousemove', (e) => {
+}
+const moving = function(e) {
     if (active) {
         divX = e.clientX - insertX;
         divY = e.clientY - insertY;
         div.style.top = `${divY}px`
         div.style.left = `${divX}px`
     }
-})
-div.addEventListener('mouseup', (e) => {
-    active = !active;
-    e.target.style.backgroundColor = 'black';
-    //sprawdzanie czy mozna korzystac z localstorage
-    if (localStorageTest()) {
-        localStorage.setItem('widthX', divX);
-        localStorage.setItem('heightY', divY);
+}
+const endMove = function(e) {
+        active = !active;
+        e.target.style.backgroundColor = 'black';
+        //sprawdzanie czy mozna korzystac z localstorage
+        if (localStorageTest()) {
+            localStorage.setItem('widthX', divX);
+            localStorage.setItem('heightY', divY);
+        }
     }
-})
+    //wywolanie
+div.addEventListener('mousedown', startMove);
+document.addEventListener('mousemove', moving)
+div.addEventListener('mouseup', endMove)
