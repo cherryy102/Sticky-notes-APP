@@ -1,9 +1,9 @@
 const notes = document.querySelector('div');
 let width;
 let height;
-if (JSON.parse(localStorage.getItem('notesPOsitionX')) != null) {
-    savePositionX = JSON.parse(localStorage.getItem('notesPOsitionX'));
-    savePositionY = JSON.parse(localStorage.getItem('notesPOsitionY'))
+if (JSON.parse(localStorage.getItem('notesPositionX')) != null) {
+    savePositionX = JSON.parse(localStorage.getItem('notesPositionX'));
+    savePositionY = JSON.parse(localStorage.getItem('notesPositionY'))
     notes.style.top = `${savePositionY[0]}px`;
     notes.style.left = `${savePositionX[0]}px`;
 }
@@ -42,8 +42,8 @@ const endMove = function(e) {
         e.target.style.backgroundColor = 'black';
         //sprawdzanie czy mozna korzystac z localstorage
 
-        localStorage.setItem('notesPOsitionX', JSON.stringify(notesX));
-        localStorage.setItem('notesPOsitionY', JSON.stringify(notesY));
+        localStorage.setItem('notesPositionX', JSON.stringify(notesX));
+        localStorage.setItem('notesPositionY', JSON.stringify(notesY));
 
     }
     //wywolanie
