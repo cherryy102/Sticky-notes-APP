@@ -29,6 +29,10 @@ body {
   min-height: 300px;
   background-color: #303030;
   border: 1px solid #606060;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .notes__top-bar {
@@ -54,6 +58,10 @@ body {
           user-select: none;
 }
 
+.notes__top-bar:hover {
+  cursor: move;
+}
+
 .notes__create-box, .notes__close-box {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -64,6 +72,7 @@ body {
 
 .notes__create-box:hover, .notes__close-box:hover {
   background-color: #ddb208;
+  cursor: pointer;
 }
 
 .notes__close, .notes__create {
@@ -104,5 +113,19 @@ body {
   width: 100%;
   height: 30px;
   border-top: 1px solid #606060;
+}
+
+.notes__text {
+  width: 100%;
+  min-height: 180px;
+  border: none;
+  background-color: transparent;
+  resize: vertical;
+  color: white;
+  font-family: arial;
+}
+
+.notes__text:focus {
+  outline: none;
 }
 /*# sourceMappingURL=style.css.map */
