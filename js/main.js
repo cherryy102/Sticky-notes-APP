@@ -1,11 +1,11 @@
 const notes = document.querySelector('div');
-let notePositionX;
-let notePositionY;
-if (JSON.parse(localStorage.getItem('notePositionXX')) !== 'null') {
-    notePositionX = JSON.parse(localStorage.getItem('notePositionX'));
-    notePositionY = JSON.parse(localStorage.getItem('notePositionY'))
-    notes.style.top = `${notePositionY[0]}px`;
-    notes.style.left = `${notePositionX[0]}px`;
+let width;
+let height;
+if (JSON.parse(localStorage.getItem('notesPOsitionX')) != null) {
+    savePositionX = JSON.parse(localStorage.getItem('notesPOsitionX'));
+    savePositionY = JSON.parse(localStorage.getItem('notesPOsitionY'))
+    notes.style.top = `${savePositionY[0]}px`;
+    notes.style.left = `${savePositionX[0]}px`;
 }
 let active = false;
 let notesX = [];
@@ -41,10 +41,10 @@ const endMove = function(e) {
         active = !active;
         e.target.style.backgroundColor = 'black';
         //sprawdzanie czy mozna korzystac z localstorage
-        if (localStorageTest()) {
-            localStorage.setItem('notePositionX', JSON.stringify(notesX));
-            localStorage.setItem('notePositionY', JSON.stringify(notesY));
-        }
+
+        localStorage.setItem('notesPOsitionX', JSON.stringify(notesX));
+        localStorage.setItem('notesPOsitionY', JSON.stringify(notesY));
+
     }
     //wywolanie
 notes.addEventListener('mousedown', startMove);
