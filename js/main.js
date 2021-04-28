@@ -41,7 +41,7 @@ let dataNote;
 let index;
 
 //start notes position
-if (JSON.parse(localStorage.getItem('notesPositionX')) != null) {
+if (JSON.parse(localStorage.getItem('notesPositionX'))) {
     savePositionX = JSON.parse(localStorage.getItem('notesPositionX'));
     savePositionY = JSON.parse(localStorage.getItem('notesPositionY'))
     for (let i = 0; i < savePositionX.length; i++) {
@@ -51,7 +51,7 @@ if (JSON.parse(localStorage.getItem('notesPositionX')) != null) {
 }
 
 //start contenst of notes
-if (JSON.parse(localStorage.getItem('notesText')) != null) {
+if (JSON.parse(localStorage.getItem('notesText'))) {
     saveContent = JSON.parse(localStorage.getItem('notesText'));
     for (let i = 0; i < saveContent.length; i++) {
 
@@ -66,7 +66,7 @@ if (localStorage.getItem('dataNameNubmerLocal')) {
 }
 
 //fix disappearing variables
-if (JSON.parse(localStorage.getItem('notesText')) != null) {
+if (JSON.parse(localStorage.getItem('notesText'))) {
     for (let i = 0; i < saveContent.length; i++) {
         notesContent[i] = saveContent[i];
     }
