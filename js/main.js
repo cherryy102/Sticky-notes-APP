@@ -1,8 +1,10 @@
 //moveing notes
 // const notes = document.querySelectorAll('.notes');
-const notesBar = document.querySelectorAll('.notes');
+const notes = document.querySelectorAll('.notes');
+const notesBar = document.querySelectorAll('.notes__top-bar');
+const noteText = document.querySelectorAll('.notes__text');
 let idNotes = [];
-notesBar.forEach(id => {
+notes.forEach(id => {
     idNotes.push(id.dataset.note)
 })
 let savePositionX;
@@ -12,8 +14,8 @@ if (JSON.parse(localStorage.getItem('notesPositionX')) != null) {
     savePositionX = JSON.parse(localStorage.getItem('notesPositionX'));
     savePositionY = JSON.parse(localStorage.getItem('notesPositionY'))
     for (let i = 0; i < savePositionX.length; i++) {
-        notesBar[i].style.top = `${savePositionY[i]}px`;
-        notesBar[i].style.left = `${savePositionX[i]}px`;
+        notes[i].style.top = `${savePositionY[i]}px`;
+        notes[i].style.left = `${savePositionX[i]}px`;
     }
 }
 if (JSON.parse(localStorage.getItem('notesText')) != null) {
@@ -54,9 +56,9 @@ function localStorageTest() {
 
 const startMove = function(e) {
     active = !active;
-    moveNote = document.querySelector(`[data-note='${this.dataset.note}'] `)
+    moveNote = document.querySelector(`[data-note='${this.dataset.bar}'] `)
 
-    dataNote = this.dataset.note;
+    dataNote = this.dataset.bar;
     insertX = e.offsetX;
     insertY = e.offsetY;
 }
@@ -93,7 +95,7 @@ notesBar.forEach(noteBar => {
 })
 document.addEventListener('mousemove', moving)
     //save text
-const noteText = document.querySelectorAll('.notes__text');
+
 
 const saveText = function() {
     let contentIndex = idNotes.indexOf(this.dataset.content);
