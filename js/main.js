@@ -1,9 +1,13 @@
 //moveing notes
 // const notes = document.querySelectorAll('.notes');
 const notesBar = document.querySelectorAll('.notes');
-
+let idNotes = [];
+notesBar.forEach(id => {
+    idNotes.push(id.dataset.note)
+})
 let savePositionX;
 let savePositionY;
+let saveContent;
 if (JSON.parse(localStorage.getItem('notesPositionX')) != null) {
     savePositionX = JSON.parse(localStorage.getItem('notesPositionX'));
     savePositionY = JSON.parse(localStorage.getItem('notesPositionY'))
@@ -12,15 +16,29 @@ if (JSON.parse(localStorage.getItem('notesPositionX')) != null) {
         notesBar[i].style.left = `${savePositionX[i]}px`;
     }
 }
+if (JSON.parse(localStorage.getItem('notesText')) != null) {
+    saveContent = JSON.parse(localStorage.getItem('notesText'));
+    for (let i = 0; i < saveContent.length; i++) {
+
+        document.querySelector(`[data-content='${idNotes[i]}']`).textContent = saveContent[i];
+
+    }
+}
 //define variables
 let active = false;
 let notesX = [];
 let notesY = [];
 let notesContent = [];
+if (JSON.parse(localStorage.getItem('notesText')) != null) {
+    for (let i = 0; i < saveContent.length; i++) {
+        notesContent[i] = saveContent[i];
+    }
+}
+// notesContent.length = idNotes.length;
 let insertX;
 let insertY;
 let moveNote;
-let idNotes = [];
+
 let index;
 //function check if localStorage can be used
 function localStorageTest() {
@@ -33,9 +51,7 @@ function localStorageTest() {
         return false;
     }
 }
-notesBar.forEach(id => {
-    idNotes.push(id.dataset.note)
-})
+
 const startMove = function(e) {
     active = !active;
     moveNote = document.querySelector(`[data-note='${this.dataset.note}'] `)
@@ -76,3 +92,15 @@ notesBar.forEach(noteBar => {
     noteBar.addEventListener('mouseup', endMove)
 })
 document.addEventListener('mousemove', moving)
+    //save text
+const noteText = document.querySelectorAll('.notes__text');
+
+const saveText = function() {
+    let contentIndex = idNotes.indexOf(this.dataset.content);
+    notesContent[contentIndex] = this.value;
+    localStorage.setItem('notesText', JSON.stringify(notesContent));
+}
+
+noteText.forEach(noteText => {
+    noteText.addEventListener('keyup', saveText);
+})
