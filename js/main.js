@@ -1,6 +1,7 @@
 const notesBar = document.querySelectorAll('.notes__top-bar');
 const noteText = document.querySelectorAll('.notes__text');
 let idNotes = ['note1'];
+//start notes
 if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
     idNotes = JSON.parse(localStorage.getItem('idNotesLocal'));
     for (let i = 1; i < idNotes.length; i++) {
@@ -22,8 +23,9 @@ if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
     }
 
 }
-const notes = document.querySelectorAll('.notes');
+
 //define variables
+const notes = document.querySelectorAll('.notes');
 let savePositionX;
 let savePositionY;
 let saveContent;
@@ -37,6 +39,7 @@ let insertY;
 let moveNote;
 let dataNote;
 let index;
+
 //start notes position
 if (JSON.parse(localStorage.getItem('notesPositionX')) != null) {
     savePositionX = JSON.parse(localStorage.getItem('notesPositionX'));
@@ -56,10 +59,12 @@ if (JSON.parse(localStorage.getItem('notesText')) != null) {
 
     }
 }
+
 //save number to lcoal
 if (localStorage.getItem('dataNameNubmerLocal')) {
     dataNameNUmber = localStorage.getItem('dataNameNubmerLocal');
 }
+
 //fix disappearing variables
 if (JSON.parse(localStorage.getItem('notesText')) != null) {
     for (let i = 0; i < saveContent.length; i++) {
@@ -79,6 +84,7 @@ function localStorageTest() {
         return false;
     }
 }
+
 //create new note
 const addNote = function() {
     const div = document.createElement('div');
@@ -105,6 +111,7 @@ const addNote = function() {
 }
 $(document).on('click', '.notes__create', addNote);
 
+//mousedown function
 const startMove = function(e) {
     active = !active;
     moveNote = document.querySelector(`[data-note='${this.dataset.bar}'] `)
@@ -113,6 +120,8 @@ const startMove = function(e) {
     insertX = e.offsetX;
     insertY = e.offsetY;
 }
+
+//mouseup function
 const moving = function(e) {
     if (active) {
         index = idNotes.indexOf(dataNote);
@@ -131,6 +140,8 @@ const moving = function(e) {
         moveNote.style.left = `${notesX[index]}px`
     }
 }
+
+//mousemove function
 const endMove = function(e) {
     active = !active;
     //if localStorage can be used create variable
@@ -141,10 +152,9 @@ const endMove = function(e) {
 }
 $(document).on('mousedown', '.notes__top-bar', startMove);
 $(document).on('mouseup', '.notes__top-bar', endMove);
-document.addEventListener('mousemove', moving)
-    //save text
+document.addEventListener('mousemove', moving);
 
-
+//save text
 const saveText = function() {
     let contentIndex = idNotes.indexOf(this.dataset.content);
     notesContent[contentIndex] = this.value;
