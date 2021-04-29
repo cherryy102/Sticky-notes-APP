@@ -6,28 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sticky notes</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="img/sticky-notes.png" type="image/x-icon">
 
 </head>
 
 <body>
+    <button class="add-note notes__create "> <img src="img/plus.png" alt="" class="add-note__icon"> Add </button>
     <div class="box">
-        <div class="notes" data-note='note1'>
-            <div class="notes__top-bar" data-bar='note1'>
-                <div class="notes__create-box"><img class="notes__create" src="img/add.png" alt=""></div>
-                <div class="notes__close-box" data-close='note1'><img class="notes__close" src="img/cancel.png" alt="">
-                </div>
-            </div>
-            <div class="notes__content"><textarea class="notes__text" data-content="note1"></textarea></div>
-            <div class="notes__bottom-bar">
-                <div class="notes__bold"></div>
-                <div class="notes__cursive"></div>
-                <div class="notes__underline"></div>
-                <div class="notes__add-list"></div>
-            </div>
-        </div>
-
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="js/main.js"></script>
