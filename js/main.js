@@ -2,6 +2,7 @@ const notesBar = document.querySelectorAll('.notes__top-bar');
 const noteText = document.querySelectorAll('.notes__text');
 // const closeBtn = document.querySelectorAll('.notes__close-box');
 let idNotes = ['note1'];
+let saveIdNotes;
 //start notes
 if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
     idNotes = JSON.parse(localStorage.getItem('idNotesLocal'));
@@ -48,8 +49,8 @@ if (JSON.parse(localStorage.getItem('notesPositionX'))) {
     for (let i = 0; i < savePositionX.length; i++) {
         notes[i].style.top = `${savePositionY[i]}px`;
         notes[i].style.left = `${savePositionX[i]}px`;
-        // notesX[i] = savePositionX[i];
-        // notesY[i] = savePositionY[i];
+        notesX[i] = savePositionX[i];
+        notesY[i] = savePositionY[i];
     }
 }
 
@@ -58,7 +59,7 @@ if (JSON.parse(localStorage.getItem('notesText'))) {
     saveContent = JSON.parse(localStorage.getItem('notesText'));
     for (let i = 0; i < saveContent.length; i++) {
 
-        document.querySelector(`[data-content='${idNotes[i]}']`).textContent = saveContent[i];
+        document.querySelector(`[data-content='${saveIdNotes[i]}']`).textContent = saveContent[i];
 
     }
 }
@@ -74,7 +75,7 @@ if (JSON.parse(localStorage.getItem('notesText'))) {
         notesContent[i] = saveContent[i];
     }
 }
-notesContent.length = idNotes.length;
+// notesContent.length = saveIdNotes.length;
 
 //function check if localStorage can be used
 function localStorageTest() {
@@ -120,6 +121,8 @@ const startMove = function(e) {
     moveNote = document.querySelector(`[data-note='${this.dataset.bar}'] `)
 
     dataNote = this.dataset.bar;
+    console.log('startmove ' + dataNote);
+
     insertX = e.offsetX;
     insertY = e.offsetY;
 }
@@ -131,14 +134,6 @@ const moving = function(e) {
 
         notesX[index] = e.clientX - insertX;
         notesY[index] = e.clientY - insertY;
-        if (savePositionX) {
-            for (let i = 0; i < savePositionX.length; i++) {
-                if (notesX[i] == null) {
-                    notesX[i] = savePositionX[i];
-                    notesY[i] = savePositionY[i];
-                }
-            }
-        }
         moveNote.style.top = `${notesY[index]}px`
         moveNote.style.left = `${notesX[index]}px`
     }
@@ -148,6 +143,7 @@ const moving = function(e) {
 const endMove = function(e) {
     active = !active;
     //if localStorage can be used create variable
+    console.log('move ' + index);
     if (localStorageTest()) {
         localStorage.setItem('notesPositionX', JSON.stringify(notesX));
         localStorage.setItem('notesPositionY', JSON.stringify(notesY));
