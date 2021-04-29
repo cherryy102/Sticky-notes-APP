@@ -65,6 +65,7 @@ if (JSON.parse(localStorage.getItem('notesText'))) {
 //save number to lcoal
 if (localStorage.getItem('dataNameNubmerLocal')) {
     dataNameNUmber = localStorage.getItem('dataNameNubmerLocal');
+
 }
 
 //fix disappearing variables
@@ -108,6 +109,7 @@ const addNote = function() {
     document.querySelector('.box').appendChild(div);
     idNotes.push(dataName);
     localStorage.setItem('dataNameNubmerLocal', dataNameNUmber);
+
     localStorage.setItem('idNotesLocal', JSON.stringify(idNotes));
 
 }
@@ -176,7 +178,11 @@ const deleteNote = function() {
         localStorage.setItem('notesPositionY', JSON.stringify(notesY));
         localStorage.setItem('notesText', JSON.stringify(notesContent));
     }
-
+    //reset dataNameNUmber
+    if (idNotes.length <= 1) {
+        dataNameNUmber = 1;
+        localStorage.setItem('dataNameNubmerLocal', dataNameNUmber);
+    }
 
 }
 $(document).on('click', '.notes__close-box', deleteNote);
