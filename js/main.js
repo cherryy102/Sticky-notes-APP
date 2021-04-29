@@ -1,6 +1,6 @@
 const notesBar = document.querySelectorAll('.notes__top-bar');
 const noteText = document.querySelectorAll('.notes__text');
-// const closeBtn = document.querySelectorAll('.notes__close-box');
+
 let idNotes = ['note1'];
 let saveIdNotes;
 //start notes
@@ -74,7 +74,6 @@ if (JSON.parse(localStorage.getItem('notesText'))) {
         notesContent[i] = saveContent[i];
     }
 }
-// notesContent.length = saveIdNotes.length;
 
 //function check if localStorage can be used
 function localStorageTest() {
