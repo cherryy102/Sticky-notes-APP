@@ -147,7 +147,6 @@ const endMove = function(e) {
 $(document).on('mousedown', '.notes__move-bar', startMove);
 $(document).on('mouseup', '.notes__move-bar', endMove);
 document.addEventListener('mousemove', moving);
-
 //save text
 const saveText = function() {
     let contentIndex = idNotes.indexOf(this.dataset.content);
@@ -155,6 +154,7 @@ const saveText = function() {
     localStorage.setItem('notesText', JSON.stringify(notesContent));
 }
 $(document).on('keyup', '.notes__text', saveText);
+
 
 //delete note
 const deleteNote = function() {
