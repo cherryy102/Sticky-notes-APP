@@ -10,17 +10,19 @@ if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
         const startDiv = document.createElement('div');
         startDiv.classList.add('notes');
         startDiv.dataset.note = `${idNotes[i]}`;
-        startDiv.innerHTML = ` <div class="notes__top-bar" data-bar='${idNotes[i]}'>
-    <div class="notes__create-box"><img class="notes__create" src="img/add.png" alt=""></div>
-    <div class="notes__close-box" data-close='${idNotes[i]}'><img class="notes__close" src="img/cancel.png" alt=""></div>
-</div>
-<div class="notes__content"><textarea class="notes__text" data-content="${idNotes[i]}"></textarea></div>
-<div class="notes__bottom-bar">
-    <div class="notes__bold"></div>
-    <div class="notes__cursive"></div>
-    <div class="notes__underline"></div>
-    <div class="notes__add-list"></div>
-</div>`
+        startDiv.innerHTML = ` <div class="notes__top-bar" >
+        <div class="notes__create-box"><img class="notes__create" src="img/add.png" alt=""></div>
+        <div class="notes__move-bar" data-bar='${idNotes[i]}'></div>
+        <div class="notes__close-box" data-close='${idNotes[i]}'><img class="notes__close" src="img/cancel.png" alt="">
+        </div>
+    </div>
+    <div class="notes__content"><textarea class="notes__text" data-content="${idNotes[i]}"></textarea></div>
+    <div class="notes__bottom-bar">
+        <div class="notes__bold"></div>
+        <div class="notes__cursive"></div>
+        <div class="notes__underline"></div>
+        <div class="notes__add-list"></div>
+    </div>`
         document.querySelector('.box').appendChild(startDiv);
     }
 
@@ -94,9 +96,11 @@ const addNote = function() {
     dataNameNUmber++;
     let dataName = `note${dataNameNUmber}`
     div.dataset.note = `${dataName}`;
-    div.innerHTML = ` <div class="notes__top-bar" data-bar='${dataName}'>
+    div.innerHTML = ` <div class="notes__top-bar" >
     <div class="notes__create-box"><img class="notes__create" src="img/add.png" alt=""></div>
-    <div class="notes__close-box" data-close='${dataName}'><img class="notes__close" src="img/cancel.png" alt=""></div>
+    <div class="notes__move-bar" data-bar='${dataName}'></div>
+    <div class="notes__close-box" data-close='${dataName}'><img class="notes__close" src="img/cancel.png" alt="">
+    </div>
 </div>
 <div class="notes__content"><textarea class="notes__text" data-content="${dataName}"></textarea></div>
 <div class="notes__bottom-bar">
@@ -143,8 +147,8 @@ const endMove = function(e) {
         localStorage.setItem('notesPositionY', JSON.stringify(notesY));
     }
 }
-$(document).on('mousedown', '.notes__top-bar', startMove);
-$(document).on('mouseup', '.notes__top-bar', endMove);
+$(document).on('mousedown', '.notes__move-bar', startMove);
+$(document).on('mouseup', '.notes__move-bar', endMove);
 document.addEventListener('mousemove', moving);
 
 //save text
