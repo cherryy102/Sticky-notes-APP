@@ -118,10 +118,7 @@ $(document).on('click', '.notes__create', addNote);
 const startMove = function(e) {
     active = !active;
     moveNote = document.querySelector(`[data-note='${this.dataset.bar}'] `)
-
     dataNote = this.dataset.bar;
-    console.log('startmove ' + dataNote);
-
     insertX = e.offsetX;
     insertY = e.offsetY;
 }
@@ -130,7 +127,6 @@ const startMove = function(e) {
 const moving = function(e) {
     if (active) {
         index = idNotes.indexOf(dataNote);
-
         notesX[index] = e.clientX - insertX;
         notesY[index] = e.clientY - insertY;
         moveNote.style.top = `${notesY[index]}px`
@@ -142,7 +138,6 @@ const moving = function(e) {
 const endMove = function(e) {
     active = !active;
     //if localStorage can be used create variable
-    console.log('move ' + index);
     if (localStorageTest()) {
         localStorage.setItem('notesPositionX', JSON.stringify(notesX));
         localStorage.setItem('notesPositionY', JSON.stringify(notesY));
