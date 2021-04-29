@@ -1,6 +1,3 @@
-const notesBar = document.querySelectorAll('.notes__top-bar');
-const noteText = document.querySelectorAll('.notes__text');
-
 let idNotes = [];
 let saveIdNotes;
 //start notes
