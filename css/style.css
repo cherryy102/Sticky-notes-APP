@@ -10,6 +10,8 @@ body {
 
 .notes {
   position: fixed;
+  top: 20px;
+  left: 150px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -128,5 +130,48 @@ body {
 
 .notes__text:focus {
   outline: none;
+}
+
+.add-note {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  -webkit-transform: translate(0);
+          transform: translate(0);
+  border-radius: 30px;
+  background-color: white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  padding: 15px 30px 15px 50px;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+.add-note__icon {
+  color: green;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  position: absolute;
+  font-size: 23px;
+  top: 50%;
+  left: 10%;
+  -webkit-transform: translateY(-55%);
+          transform: translateY(-55%);
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.add-note:hover .add-note__icon {
+  -webkit-transform: translateY(-55%) rotate(90deg);
+          transform: translateY(-55%) rotate(90deg);
 }
 /*# sourceMappingURL=style.css.map */
