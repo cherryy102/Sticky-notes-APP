@@ -58,9 +58,7 @@ if (JSON.parse(localStorage.getItem('notesPositionX'))) {
 if (JSON.parse(localStorage.getItem('notesText'))) {
     saveContent = JSON.parse(localStorage.getItem('notesText'));
     for (let i = 0; i < saveContent.length; i++) {
-
-        document.querySelector(`[data-content='${saveIdNotes[i]}']`).textContent = saveContent[i];
-
+        document.querySelector(`[data-content='${idNotes[i]}']`).textContent = saveContent[i];
     }
 }
 
