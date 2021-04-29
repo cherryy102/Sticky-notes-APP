@@ -1,5 +1,6 @@
 const notesBar = document.querySelectorAll('.notes__top-bar');
 const noteText = document.querySelectorAll('.notes__text');
+// const closeBtn = document.querySelectorAll('.notes__close-box');
 let idNotes = ['note1'];
 //start notes
 if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
@@ -10,7 +11,7 @@ if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
         startDiv.dataset.note = `${idNotes[i]}`;
         startDiv.innerHTML = ` <div class="notes__top-bar" data-bar='${idNotes[i]}'>
     <div class="notes__create-box"><img class="notes__create" src="img/add.png" alt=""></div>
-    <div class="notes__close-box"><img class="notes__close" src="img/cancel.png" alt=""></div>
+    <div class="notes__close-box" data-close='${idNotes[i]}'><img class="notes__close" src="img/cancel.png" alt=""></div>
 </div>
 <div class="notes__content"><textarea class="notes__text" data-content="${idNotes[i]}"></textarea></div>
 <div class="notes__bottom-bar">
@@ -47,6 +48,8 @@ if (JSON.parse(localStorage.getItem('notesPositionX'))) {
     for (let i = 0; i < savePositionX.length; i++) {
         notes[i].style.top = `${savePositionY[i]}px`;
         notes[i].style.left = `${savePositionX[i]}px`;
+        // notesX[i] = savePositionX[i];
+        // notesY[i] = savePositionY[i];
     }
 }
 
@@ -94,7 +97,7 @@ const addNote = function() {
     div.dataset.note = `${dataName}`;
     div.innerHTML = ` <div class="notes__top-bar" data-bar='${dataName}'>
     <div class="notes__create-box"><img class="notes__create" src="img/add.png" alt=""></div>
-    <div class="notes__close-box"><img class="notes__close" src="img/cancel.png" alt=""></div>
+    <div class="notes__close-box" data-close='${dataName}'><img class="notes__close" src="img/cancel.png" alt=""></div>
 </div>
 <div class="notes__content"><textarea class="notes__text" data-content="${dataName}"></textarea></div>
 <div class="notes__bottom-bar">
@@ -161,3 +164,25 @@ const saveText = function() {
     localStorage.setItem('notesText', JSON.stringify(notesContent));
 }
 $(document).on('keyup', '.notes__text', saveText);
+
+//delete note
+const deleteNote = function() {
+    let dataClose = this.dataset.close;
+    if (dataClose !== 'note1') {
+
+        let closeIndex = idNotes.indexOf(dataClose);
+        const removeDiv = document.querySelector(`[data-note='${dataClose}']`);
+        document.querySelector('.box').removeChild(removeDiv);
+        idNotes.splice(closeIndex, 1);
+        notesX.splice(closeIndex, 1);
+        notesY.splice(closeIndex, 1);
+        notesContent.splice(closeIndex, 1);
+        localStorage.setItem('idNotesLocal', JSON.stringify(idNotes));
+        localStorage.setItem('notesPositionX', JSON.stringify(notesX));
+        localStorage.setItem('notesPositionY', JSON.stringify(notesY));
+        localStorage.setItem('notesText', JSON.stringify(notesContent));
+    }
+
+
+}
+$(document).on('click', '.notes__close-box', deleteNote);
