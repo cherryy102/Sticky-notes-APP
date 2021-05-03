@@ -7,7 +7,7 @@ if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
         const startDiv = document.createElement('div');
         startDiv.classList.add('notes');
         startDiv.dataset.note = `${idNotes[i]}`;
-        startDiv.innerHTML = ` <div class="notes__top-bar" >
+        startDiv.innerHTML = `  <div class="notes__top-bar">
         <div class="notes__create-box"><img class="notes__create" src="img/add.png" alt=""></div>
         <div class="notes__move-bar" data-bar='${idNotes[i]}'></div>
         <div class="notes__close-box" data-close='${idNotes[i]}'><img class="notes__close" src="img/cancel.png" alt="">
@@ -15,10 +15,9 @@ if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
     </div>
     <div class="notes__content"><textarea class="notes__text" data-content="${idNotes[i]}"></textarea></div>
     <div class="notes__bottom-bar">
-        <div class="notes__bold"></div>
-        <div class="notes__cursive"></div>
-        <div class="notes__underline"></div>
-        <div class="notes__add-list"></div>
+        <div class="notes__mode notes__mode--bold"><i class="fas fa-bold"></i></div>
+        <div class="notes__mode notes__mode--cursive"><i class="fas fa-italic"></i></div>
+        <div class="notes__mode notes__mode--list"><i class="fas fa-list-ul"></i></div>
     </div>`
         document.querySelector('.box').appendChild(startDiv);
     }
@@ -93,7 +92,7 @@ const addNote = function() {
     dataNameNUmber++;
     let dataName = `note${dataNameNUmber}`
     div.dataset.note = `${dataName}`;
-    div.innerHTML = ` <div class="notes__top-bar" >
+    div.innerHTML = `  <div class="notes__top-bar">
     <div class="notes__create-box"><img class="notes__create" src="img/add.png" alt=""></div>
     <div class="notes__move-bar" data-bar='${dataName}'></div>
     <div class="notes__close-box" data-close='${dataName}'><img class="notes__close" src="img/cancel.png" alt="">
@@ -101,10 +100,9 @@ const addNote = function() {
 </div>
 <div class="notes__content"><textarea class="notes__text" data-content="${dataName}"></textarea></div>
 <div class="notes__bottom-bar">
-    <div class="notes__bold"></div>
-    <div class="notes__cursive"></div>
-    <div class="notes__underline"></div>
-    <div class="notes__add-list"></div>
+    <div class="notes__mode notes__mode--bold"><i class="fas fa-bold"></i></div>
+    <div class="notes__mode notes__mode--cursive"><i class="fas fa-italic"></i></div>
+    <div class="notes__mode notes__mode--list"><i class="fas fa-list-ul"></i></div>
 </div>`
     document.querySelector('.box').appendChild(div);
     idNotes.push(dataName);

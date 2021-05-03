@@ -30,7 +30,8 @@ body {
   width: 300px;
   min-height: 300px;
   background-color: #303030;
-  border: 1px solid #606060;
+  -webkit-box-shadow: 0 0 2px 0px black;
+          box-shadow: 0 0 2px 0px black;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -87,7 +88,7 @@ body {
 }
 
 .notes__close {
-  height: 45%;
+  height: 40%;
 }
 
 .notes__content {
@@ -107,15 +108,15 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: unset;
-      -ms-flex-align: unset;
-          align-items: unset;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: 100%;
   height: 30px;
-  border-top: 1px solid #606060;
+  border-top: 1px solid rgba(96, 96, 96, 0.3);
 }
 
 .notes__text {
@@ -124,13 +125,27 @@ body {
   border: none;
   background-color: transparent;
   resize: vertical;
-  overflow: hidden;
+  overflow: auto;
   color: white;
   font-family: arial;
+  resize: none;
 }
 
 .notes__text:focus {
   outline: none;
+}
+
+.notes__mode {
+  color: #bebebe;
+  width: 25px;
+  padding: 5px;
+  text-align: center;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.notes__mode:hover {
+  background-color: #444444;
 }
 
 .add-note {
