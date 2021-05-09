@@ -25,10 +25,10 @@ if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
         startDiv.innerHTML = `  <div class="notes__top-bar">
         <div class="notes__create-box"><img class="notes__create" src="img/add.png" alt=""></div>
         <div class="notes__move-bar" data-bar='${idNotes[i]}'></div>
-        <div class="notes__close-box" data-close='${idNotes[i]}'><img class="notes__close" src="img/cancel.png" alt="">
+        <div class="notes__close-box" data-close='${idNotes[i]}' ><img class="notes__close" src="img/cancel.png" alt="">
         </div>
     </div>
-    <div class="notes__content"><textarea class="notes__text" data-content="${idNotes[i]}"></textarea></div>
+    <div class="notes__content"><textarea  class="notes__title" data-title="${idNotes[i]}" placeholder='Title'></textarea><textarea class="notes__text" data-content="${idNotes[i]}"  placeholder='Text'></textarea></div>
     <div class="notes__bottom-bar">
         <div class="notes__mode notes__mode--bold"><i class="fas fa-bold"></i></div>
         <div class="notes__mode notes__mode--cursive"><i class="fas fa-italic"></i></div>
@@ -44,10 +44,12 @@ const notes = document.querySelectorAll('.notes');
 let savePositionX;
 let savePositionY;
 let saveContent;
+let saveTitle;
 let active = false;
 let notesX = [];
 let notesY = [];
 let notesContent = [];
+let notesTitle = [];
 let dataNameNUmber = 0;
 let insertX;
 let insertY;
@@ -66,8 +68,16 @@ if (JSON.parse(localStorage.getItem('notesPositionX'))) {
         notesY[i] = savePositionY[i];
     }
 }
+//start title of notes
 
-//start contenst of notes
+if (JSON.parse(localStorage.getItem('notesTitle'))) {
+    saveTitle = JSON.parse(localStorage.getItem('notesTitle'));
+    for (let i = 0; i < saveTitle.length; i++) {
+        document.querySelector(`[data-title='${idNotes[i]}']`).textContent = saveTitle[i];
+    }
+}
+
+//start contents of notes
 if (JSON.parse(localStorage.getItem('notesText'))) {
     saveContent = JSON.parse(localStorage.getItem('notesText'));
     for (let i = 0; i < saveContent.length; i++) {
@@ -87,8 +97,11 @@ if (JSON.parse(localStorage.getItem('notesText'))) {
         notesContent[i] = saveContent[i];
     }
 }
-
-
+if (JSON.parse(localStorage.getItem('notesTitle'))) {
+    for (let i = 0; i < saveTitle.length; i++) {
+        notesTitle[i] = saveTitle[i];
+    }
+}
 
 //create new note
 const addNote = function() {
@@ -103,7 +116,7 @@ const addNote = function() {
     <div class="notes__close-box" data-close='${dataName}'><img class="notes__close" src="img/cancel.png" alt="">
     </div>
 </div>
-<div class="notes__content"><textarea class="notes__text" data-content="${dataName}"></textarea></div>
+<div class="notes__content"><textarea class="notes__title" data-title="${dataName}" placeholder='Title'></textarea><textarea class="notes__text" data-content="${dataName}" placeholder='Text'></textarea></div>
 <div class="notes__bottom-bar">
     <div class="notes__mode notes__mode--bold"><i class="fas fa-bold"></i></div>
     <div class="notes__mode notes__mode--cursive"><i class="fas fa-italic"></i></div>
@@ -148,6 +161,16 @@ const endMove = function(e) {
 $(document).on('mousedown', '.notes__move-bar', startMove);
 $(document).on('mouseup', '.notes__move-bar', endMove);
 document.addEventListener('mousemove', moving);
+
+//save title
+const saveTitleLocal = function() {
+    let titleIndex = idNotes.indexOf(this.dataset.title);
+    notesTitle[titleIndex] = this.value;
+    localStorage.setItem('notesTitle', JSON.stringify(notesTitle));
+}
+$(document).on('keyup', '.notes__title', saveTitleLocal);
+
+
 //save text
 const saveText = function() {
     let contentIndex = idNotes.indexOf(this.dataset.content);
@@ -167,19 +190,16 @@ const deleteNote = function() {
     notesX.splice(closeIndex, 1);
     notesY.splice(closeIndex, 1);
     notesContent.splice(closeIndex, 1);
+    notesTitle.splice(closeIndex, 1);
     localStorage.setItem('idNotesLocal', JSON.stringify(idNotes));
     localStorage.setItem('notesPositionX', JSON.stringify(notesX));
     localStorage.setItem('notesPositionY', JSON.stringify(notesY));
     localStorage.setItem('notesText', JSON.stringify(notesContent));
+    localStorage.setItem('notesTitle', JSON.stringify(notesContent));
 
     //reset dataNameNUmber
-    if (idNotes.length <= 1) {
-        if (idNotes.length === 0) {
-            dataNameNUmber = 0;
-        } else {
-            dataNameNUmber = 1;
-        }
-
+    if (idNotes.length === 0) {
+        dataNameNUmber = 0;
         localStorage.setItem('dataNameNubmerLocal', dataNameNUmber);
     }
 
