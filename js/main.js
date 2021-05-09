@@ -1,3 +1,18 @@
+//function check if localStorage can be used
+function localStorageTest() {
+    const test = "test" + new Date().valueOf();
+    try {
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+if (!localStorageTest()) {
+    alert('Twoja przeglądarka nie obsługuje localStorage lub jest ono wyłączone. Notatki nie będą działać.');
+}
+
 let idNotes = [];
 let saveIdNotes;
 //start notes
@@ -73,17 +88,7 @@ if (JSON.parse(localStorage.getItem('notesText'))) {
     }
 }
 
-//function check if localStorage can be used
-function localStorageTest() {
-    const test = "test" + new Date().valueOf();
-    try {
-        localStorage.setItem(test, test);
-        localStorage.removeItem(test);
-        return true;
-    } catch (e) {
-        return false;
-    }
-}
+
 
 //create new note
 const addNote = function() {
@@ -137,10 +142,8 @@ const moving = function(e) {
 const endMove = function(e) {
     active = !active;
     //if localStorage can be used create variable
-    if (localStorageTest()) {
-        localStorage.setItem('notesPositionX', JSON.stringify(notesX));
-        localStorage.setItem('notesPositionY', JSON.stringify(notesY));
-    }
+    localStorage.setItem('notesPositionX', JSON.stringify(notesX));
+    localStorage.setItem('notesPositionY', JSON.stringify(notesY));
 }
 $(document).on('mousedown', '.notes__move-bar', startMove);
 $(document).on('mouseup', '.notes__move-bar', endMove);
