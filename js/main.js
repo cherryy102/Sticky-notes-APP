@@ -174,7 +174,12 @@ const deleteNote = function() {
 
     //reset dataNameNUmber
     if (idNotes.length <= 1) {
-        dataNameNUmber = 0;
+        if (idNotes.length === 0) {
+            dataNameNUmber = 0;
+        } else {
+            dataNameNUmber = 1;
+        }
+
         localStorage.setItem('dataNameNubmerLocal', dataNameNUmber);
     }
 
