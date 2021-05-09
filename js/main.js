@@ -195,7 +195,7 @@ const deleteNote = function() {
     localStorage.setItem('notesPositionX', JSON.stringify(notesX));
     localStorage.setItem('notesPositionY', JSON.stringify(notesY));
     localStorage.setItem('notesText', JSON.stringify(notesContent));
-    localStorage.setItem('notesTitle', JSON.stringify(notesContent));
+    localStorage.setItem('notesTitle', JSON.stringify(notesTitle));
 
     //reset dataNameNUmber
     if (idNotes.length === 0) {
