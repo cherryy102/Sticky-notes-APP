@@ -54,7 +54,7 @@ body {
           align-items: unset;
   height: 30px;
   width: 100%;
-  background-color: #eec00a;
+  background-color: #f7ce2b;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -75,7 +75,7 @@ body {
 }
 
 .notes__create-box:hover, .notes__close-box:hover {
-  background-color: #ddb208;
+  background-color: #e9bd0d;
   cursor: pointer;
 }
 
@@ -94,7 +94,7 @@ body {
 .notes__content {
   color: white;
   font-size: 14px;
-  padding: 20px;
+  padding: 10px 20px;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
@@ -123,16 +123,32 @@ body {
   width: 100%;
   min-height: 180px;
   border: none;
+  padding-left: 5px;
   background-color: transparent;
-  resize: vertical;
   overflow: auto;
   color: white;
   font-family: arial;
+  font-size: 16px;
   resize: none;
 }
 
 .notes__text:focus {
   outline: none;
+}
+
+.notes__title {
+  width: 100%;
+  height: 25px;
+  border: none;
+  resize: none;
+  overflow: hidden;
+  background-color: transparent;
+  color: white;
+  font-family: arial;
+  font-size: 25px;
+  outline: none;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .notes__mode {
