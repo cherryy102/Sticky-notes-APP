@@ -1,8 +1,3 @@
-//naprawić bug znikania listy
-// i coś ogarnąć z nimerowanie bo dalej się psuje
-
-
-
 //function check if localStorage can be used
 function localStorageTest() {
     const test = "test" + new Date().valueOf();
@@ -62,13 +57,10 @@ let notesContent = [];
 let notesTitle = [];
 let dataNameNUmber = 0;
 let insertX;
-
 let insertY;
 let moveNote;
 let dataNote;
 let index;
-
-
 //start notes position
 if (JSON.parse(localStorage.getItem('notesPositionX'))) {
     savePositionX = JSON.parse(localStorage.getItem('notesPositionX'));
@@ -191,7 +183,6 @@ const endMove = function(e) {
 $(document).on('mousedown', '.notes__move-bar', startMove);
 $(document).on('mouseup', '.notes__move-bar', endMove);
 document.addEventListener('mousemove', moving);
-
 //save title
 const saveTitleLocal = function() {
     let titleIndex = idNotes.indexOf(this.dataset.title);
@@ -199,8 +190,6 @@ const saveTitleLocal = function() {
     localStorage.setItem('notesTitle', JSON.stringify(notesTitle));
 }
 $(document).on('keyup', '.notes__title', saveTitleLocal);
-
-
 //save text
 const saveText = function() {
     let contentIndex = idNotes.indexOf(this.dataset.text);
@@ -215,22 +204,19 @@ let noteNameId;
 //get note names
 function getNotesName() {
     noteNameId = this.dataset.note;
-    console.log(noteNameId);
-
 }
 $(document).on('click', '.notes', getNotesName);
-
+//declare id of data-item
 let dataItemNumber = 1;
-if (localStorage.setItem('dataItemNumber', dataItemNumber)) {
-    dataItemNumber = localStorage.getItem('dataItemNumber', dataItemNumber);
+if (localStorage.getItem('dataItemNumber')) {
+    dataItemNumber = localStorage.getItem('dataItemNumber');
 }
 const dataItemNumberPlus = () => {
     dataItemNumber++;
 }
 $(document).on('keydown', `[data-item]`, dataItemNumberPlus);
-//list mode
-
-const list = function(e) {
+//list mode 
+const addListmode = function() {
     dataItemNumber++;
     let noteIndexList = idNotes.indexOf(this.dataset.list);
     if (notesContent[noteIndexList] === '' || notesContent.length === 0) {
@@ -243,17 +229,15 @@ const list = function(e) {
             <li data-item-li="${dataItemNumber}"><input type="text" class=notes__list-item data-item="${dataItemNumber}" value=''></li>
         </ul>`;
             localStorage.setItem('listActive', JSON.stringify(listActive));
+            localStorage.setItem('dataItemNumber', dataItemNumber);
         }
     }
-
-
 }
 
-$(document).on('click', '.notes__mode--list', list);
-
-const listInput = function(e) {
+$(document).on('click', '.notes__mode--list', addListmode);
+//add next list item
+const addNextItemToList = function(e) {
         let listIndex = idNotes.indexOf(noteNameId);
-        dataItemNumber++;
         const dataItem = this.dataset.item;
         const valueItem = document.querySelector(`[data-item='${dataItem}']`).value;
         const itemText = document.querySelector(`[data-item='${dataItem}']`);
@@ -262,6 +246,7 @@ const listInput = function(e) {
         listContentSave[listIndex] = ulSave.innerHTML;
         const enter = e.keyCode;
         if (enter === 13) {
+            dataItemNumber++;
             const li = document.createElement('li');
             li.setAttribute('data-item-li', dataItemNumber);
             li.innerHTML = `<input type="text" class='notes__list-item' data-item="${dataItemNumber}">`;
@@ -273,18 +258,18 @@ const listInput = function(e) {
         }
 
         localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
+        localStorage.setItem('dataItemNumber', dataItemNumber);
     }
-    //remove list
+    //remove list item
 const removeListItem = function(e) {
-    let listIndexRemove = idNotes.indexOf(noteNameId);
     const dataItemRemove = this.dataset.item;
     const item = document.querySelector(`[data-item='${dataItemRemove}']`);
     if (e.keyCode === 8 && item.value === '') {
+        let listIndexRemove = idNotes.indexOf(noteNameId);
         const itemLi = document.querySelector(`[data-item-li='${dataItemRemove}']`);
         const notesContent = document.querySelector(`[data-content = '${noteNameId}']`);
         const ulSave = document.querySelector(`[data-lists='${noteNameId}']`);
         itemLi.remove();
-        listContentSave.splice(listIndexRemove, 1);
         listContentSave[listIndexRemove] = ulSave.innerHTML;
         localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
         const li = document.querySelectorAll(`[data-lists='${noteNameId}'] [data-item-li]`);
@@ -295,10 +280,8 @@ const removeListItem = function(e) {
         }
     }
 }
-$(document).on('keyup', `[data-item]`, listInput);
+$(document).on('keyup', `[data-item]`, addNextItemToList);
 $(document).on('keyup', `[data-item]`, removeListItem);
-
-
 //delete note
 const deleteNote = function() {
     let dataClose = this.dataset.close;
@@ -319,12 +302,12 @@ const deleteNote = function() {
     localStorage.setItem('notesTitle', JSON.stringify(notesTitle));
     localStorage.setItem('listActive', JSON.stringify(listActive));
     localStorage.setItem('listContentSave', JSON.stringify(listContentSave));
-
     //reset dataNameNUmber
     if (idNotes.length === 0) {
         dataNameNUmber = 0;
+        dataItemNumber = 0;
         localStorage.setItem('dataNameNubmerLocal', dataNameNUmber);
+        localStorage.setItem('dataItemNumber', dataItemNumber);
     }
-
 }
 $(document).on('click', '.notes__close-box', deleteNote);
