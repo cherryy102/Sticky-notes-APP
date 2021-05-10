@@ -1,3 +1,8 @@
+//naprawić bug znikania listy
+// i coś ogarnąć z nimerowanie bo dalej się psuje
+
+
+
 //function check if localStorage can be used
 function localStorageTest() {
     const test = "test" + new Date().valueOf();
@@ -43,18 +48,7 @@ if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
     }
 
 }
-if (JSON.parse(localStorage.getItem('listContentSave'))) {
-    listContentSave = JSON.parse(localStorage.getItem('listContentSave'));
-    for (let i = 0; i < idNotes.length; i++) {
-        if (listActive[i] === true) {
-            document.querySelector(`[data-content='${idNotes[i]}']`).innerHTML = `<textarea  class="notes__title" data-title="${idNotes[i]}" placeholder='Title'></textarea><ul data-lists='${idNotes[i]}'><ul>`;
-            document.querySelector(`[data-lists='${idNotes[i]}']`).innerHTML = listContentSave[i];
-        } else if (listActive[i] === false) {
-            document.querySelector(`[data-content='${idNotes[i]}']`).innerHTML = `<textarea  class="notes__title" data-title="${idNotes[i]}" placeholder='Title'></textarea><textarea class="notes__text" data-text="${idNotes[i]}"  placeholder='Text'></textarea>`;
-        }
 
-    }
-}
 //define variables
 const notes = document.querySelectorAll('.notes');
 let savePositionX;
@@ -86,6 +80,19 @@ if (JSON.parse(localStorage.getItem('notesPositionX'))) {
         notesY[i] = savePositionY[i];
     }
 }
+//list content 
+if (JSON.parse(localStorage.getItem('listContentSave'))) {
+    listContentSave = JSON.parse(localStorage.getItem('listContentSave'));
+    for (let i = 0; i < idNotes.length; i++) {
+        if (listActive[i] === true) {
+            document.querySelector(`[data-content='${idNotes[i]}']`).innerHTML = `<textarea  class="notes__title" data-title="${idNotes[i]}" placeholder='Title'></textarea><ul data-lists='${idNotes[i]}'><ul>`;
+            document.querySelector(`[data-lists='${idNotes[i]}']`).innerHTML = listContentSave[i];
+        } else if (listActive[i] === false) {
+            document.querySelector(`[data-content='${idNotes[i]}']`).innerHTML = `<textarea  class="notes__title" data-title="${idNotes[i]}" placeholder='Title'></textarea><textarea class="notes__text" data-text="${idNotes[i]}"  placeholder='Text'></textarea>`;
+        }
+
+    }
+}
 //start title of notes
 
 if (JSON.parse(localStorage.getItem('notesTitle'))) {
@@ -99,7 +106,7 @@ if (JSON.parse(localStorage.getItem('notesTitle'))) {
 if (JSON.parse(localStorage.getItem('notesText'))) {
     saveContent = JSON.parse(localStorage.getItem('notesText'));
     for (let i = 0; i < saveContent.length; i++) {
-        if (saveContent[i] != null) {
+        if (saveContent[i] != null && saveContent[i] != '') {
             document.querySelector(`[data-text='${idNotes[i]}']`).textContent = saveContent[i];
         }
 
@@ -197,70 +204,100 @@ $(document).on('keyup', '.notes__title', saveTitleLocal);
 //save text
 const saveText = function() {
     let contentIndex = idNotes.indexOf(this.dataset.text);
-    notesContent[contentIndex] = this.value;
-    localStorage.setItem('notesText', JSON.stringify(notesContent));
+    if (!listActive[contentIndex]) {
+        notesContent[contentIndex] = this.value;
+        localStorage.setItem('notesText', JSON.stringify(notesContent));
+    }
+
 }
 $(document).on('keyup', '.notes__text', saveText);
+let noteNameId;
+//get note names
+function getNotesName() {
+    noteNameId = this.dataset.note;
+    console.log(noteNameId);
+
+}
+$(document).on('click', '.notes', getNotesName);
+
 let dataItemNumber = 1;
 if (localStorage.setItem('dataItemNumber', dataItemNumber)) {
-    dataItemNumber = localStorage.setItem('dataItemNumber', dataItemNumber);
+    dataItemNumber = localStorage.getItem('dataItemNumber', dataItemNumber);
 }
-let dataContent;
-const list = function(e) {
-    // listActive = true;
-    let noteIndex = idNotes.indexOf(this.dataset.list);
-    dataContent = this.dataset.list;
-    listActive[noteIndex] = true;
-    localStorage.setItem('listActive', JSON.stringify(listActive));
-    if (listActive[noteIndex] === true) {
-        document.querySelector(`[data-content='${dataContent}']`).innerHTML = `<textarea type="text" class="notes__title" data-title="${dataContent}" placeholder='Title'></textarea>
-        <ul data-lists='${dataContent}'>
-        <li data-item-li="${dataItemNumber}"><input type="text" class=notes__list-item data-item="${dataItemNumber}" value=''></li>
-    </ul>`;
+const dataItemNumberPlus = () => {
+    dataItemNumber++;
+}
+$(document).on('keydown', `[data-item]`, dataItemNumberPlus);
+//list mode
 
+const list = function(e) {
+    dataItemNumber++;
+    let noteIndexList = idNotes.indexOf(this.dataset.list);
+    if (notesContent[noteIndexList] === '' || notesContent.length === 0) {
+        let dataContent = this.dataset.list;
+        listActive[noteIndexList] = true;
+
+        if (listActive[noteIndexList] === true) {
+            document.querySelector(`[data-content='${dataContent}']`).innerHTML = `<textarea type="text" class="notes__title" data-title="${dataContent}" placeholder='Title'></textarea>
+            <ul data-lists='${dataContent}'>
+            <li data-item-li="${dataItemNumber}"><input type="text" class=notes__list-item data-item="${dataItemNumber}" value=''></li>
+        </ul>`;
+            localStorage.setItem('listActive', JSON.stringify(listActive));
+        }
     }
+
 
 }
 
 $(document).on('click', '.notes__mode--list', list);
-let noteNameId;
 
-function getNotesName() {
-    noteNameId = this.dataset.note;
-}
-$(document).on('click', '.notes', getNotesName);
 const listInput = function(e) {
-    let listIndex = idNotes.indexOf(noteNameId);
-
-    const dataItem = this.dataset.item;
-    const valueItem = document.querySelector(`[data-item='${dataItem}']`).value;
-    const itemText = document.querySelector(`[data-item='${dataItem}']`);
-    itemText.setAttribute('value', valueItem);
-    const ulSave = document.querySelector(`[data-lists='${noteNameId}']`);
-    listContentSave[listIndex] = ulSave.innerHTML;
-    const enter = e.keyCode;
-    if (enter === 13) {
+        let listIndex = idNotes.indexOf(noteNameId);
         dataItemNumber++;
-        const li = document.createElement('li');
-        li.setAttribute('data-item-li', dataItemNumber);
-        li.innerHTML = `<input type="text" class=notes__list-item data-item="${dataItemNumber}">`;
-        document.querySelector(`[data-lists='${noteNameId}']`).appendChild(li);
+        const dataItem = this.dataset.item;
+        const valueItem = document.querySelector(`[data-item='${dataItem}']`).value;
+        const itemText = document.querySelector(`[data-item='${dataItem}']`);
+        itemText.setAttribute('value', valueItem);
+        const ulSave = document.querySelector(`[data-lists='${noteNameId}']`);
         listContentSave[listIndex] = ulSave.innerHTML;
+        const enter = e.keyCode;
+        if (enter === 13) {
+            const li = document.createElement('li');
+            li.setAttribute('data-item-li', dataItemNumber);
+            li.innerHTML = `<input type="text" class='notes__list-item' data-item="${dataItemNumber}">`;
+            document.querySelector(`[data-lists='${noteNameId}']`).appendChild(li);
+            listContentSave[listIndex] = ulSave.innerHTML;
+            localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
+            localStorage.setItem('dataItemNumber', dataItemNumber);
+
+        }
+
         localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
-        localStorage.setItem('dataItemNumber', dataItemNumber);
-
     }
-
-    const item = document.querySelector(`[data-item='${dataItem}']`);
-    const itemLi = document.querySelector(`[data-item-li='${dataItem}']`);
-    if (enter === 8 && item.value === '') {
+    //remove list
+const removeListItem = function(e) {
+    let listIndexRemove = idNotes.indexOf(noteNameId);
+    const dataItemRemove = this.dataset.item;
+    const item = document.querySelector(`[data-item='${dataItemRemove}']`);
+    if (e.keyCode === 8 && item.value === '') {
+        const itemLi = document.querySelector(`[data-item-li='${dataItemRemove}']`);
+        const notesContent = document.querySelector(`[data-content = '${noteNameId}']`);
+        const ulSave = document.querySelector(`[data-lists='${noteNameId}']`);
         itemLi.remove();
-        listContentSave[listIndex] = ulSave.innerHTML;
+        listContentSave.splice(listIndexRemove, 1);
+        listContentSave[listIndexRemove] = ulSave.innerHTML;
         localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
+        const li = document.querySelectorAll(`[data-lists='${noteNameId}'] [data-item-li]`);
+        if (li.length === 0) {
+            notesContent.innerHTML = `<textarea  class="notes__title" data-title="${noteNameId}" placeholder='Title'></textarea><textarea class="notes__text" data-text="${noteNameId}"  placeholder='Text'></textarea>`;
+            listActive[listIndexRemove] = false;
+            localStorage.setItem('listActive', JSON.stringify(listActive));
+        }
     }
-    localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
 }
 $(document).on('keyup', `[data-item]`, listInput);
+$(document).on('keyup', `[data-item]`, removeListItem);
+
 
 //delete note
 const deleteNote = function() {
