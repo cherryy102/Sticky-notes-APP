@@ -15,6 +15,11 @@ if (!localStorageTest()) {
 
 let idNotes = [];
 let saveIdNotes;
+let listActive = [];
+let listContentSave = [];
+if (JSON.parse(localStorage.getItem('listActive'))) {
+    listActive = JSON.parse(localStorage.getItem('listActive'));
+}
 //start notes
 if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
     idNotes = JSON.parse(localStorage.getItem('idNotesLocal'));
@@ -28,17 +33,28 @@ if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
         <div class="notes__close-box" data-close='${idNotes[i]}' ><img class="notes__close" src="img/cancel.png" alt="">
         </div>
     </div>
-    <div class="notes__content"><textarea  class="notes__title" data-title="${idNotes[i]}" placeholder='Title'></textarea><textarea class="notes__text" data-content="${idNotes[i]}"  placeholder='Text'></textarea></div>
+    <div class="notes__content" data-content="${idNotes[i]}"><textarea  class="notes__title" data-title="${idNotes[i]}" placeholder='Title'></textarea><textarea class="notes__text" data-text="${idNotes[i]}"  placeholder='Text'></textarea></div>
     <div class="notes__bottom-bar">
         <div class="notes__mode notes__mode--bold"><i class="fas fa-bold"></i></div>
         <div class="notes__mode notes__mode--cursive"><i class="fas fa-italic"></i></div>
-        <div class="notes__mode notes__mode--list"><i class="fas fa-list-ul"></i></div>
-    </div>`
+        <div class="notes__mode notes__mode--list" data-list="${idNotes[i]}"><i class="fas fa-list-ul"></i></div>
+    </div>`;
         document.querySelector('.box').appendChild(startDiv);
     }
 
 }
+if (JSON.parse(localStorage.getItem('listContentSave'))) {
+    listContentSave = JSON.parse(localStorage.getItem('listContentSave'));
+    for (let i = 0; i < idNotes.length; i++) {
+        if (listActive[i] === true) {
+            document.querySelector(`[data-content='${idNotes[i]}']`).innerHTML = `<textarea  class="notes__title" data-title="${idNotes[i]}" placeholder='Title'></textarea><ul data-lists='${idNotes[i]}'><ul>`;
+            document.querySelector(`[data-lists='${idNotes[i]}']`).innerHTML = listContentSave[i];
+        } else if (listActive[i] === false) {
+            document.querySelector(`[data-content='${idNotes[i]}']`).innerHTML = `<textarea  class="notes__title" data-title="${idNotes[i]}" placeholder='Title'></textarea><textarea class="notes__text" data-text="${idNotes[i]}"  placeholder='Text'></textarea>`;
+        }
 
+    }
+}
 //define variables
 const notes = document.querySelectorAll('.notes');
 let savePositionX;
@@ -52,10 +68,12 @@ let notesContent = [];
 let notesTitle = [];
 let dataNameNUmber = 0;
 let insertX;
+
 let insertY;
 let moveNote;
 let dataNote;
 let index;
+
 
 //start notes position
 if (JSON.parse(localStorage.getItem('notesPositionX'))) {
@@ -81,7 +99,10 @@ if (JSON.parse(localStorage.getItem('notesTitle'))) {
 if (JSON.parse(localStorage.getItem('notesText'))) {
     saveContent = JSON.parse(localStorage.getItem('notesText'));
     for (let i = 0; i < saveContent.length; i++) {
-        document.querySelector(`[data-content='${idNotes[i]}']`).textContent = saveContent[i];
+        if (saveContent[i] != null) {
+            document.querySelector(`[data-text='${idNotes[i]}']`).textContent = saveContent[i];
+        }
+
     }
 }
 
@@ -116,17 +137,19 @@ const addNote = function() {
     <div class="notes__close-box" data-close='${dataName}'><img class="notes__close" src="img/cancel.png" alt="">
     </div>
 </div>
-<div class="notes__content"><textarea class="notes__title" data-title="${dataName}" placeholder='Title'></textarea><textarea class="notes__text" data-content="${dataName}" placeholder='Text'></textarea></div>
+<div class="notes__content" data-content="${dataName}"><textarea class="notes__title" data-title="${dataName}" placeholder='Title'></textarea><textarea class="notes__text" data-text="${dataName}" placeholder='Text'></textarea></div>
 <div class="notes__bottom-bar">
     <div class="notes__mode notes__mode--bold"><i class="fas fa-bold"></i></div>
     <div class="notes__mode notes__mode--cursive"><i class="fas fa-italic"></i></div>
-    <div class="notes__mode notes__mode--list"><i class="fas fa-list-ul"></i></div>
+    <div class="notes__mode notes__mode--list" data-list="${dataName}"><i class="fas fa-list-ul" ></i></div>
 </div>`
     document.querySelector('.box').appendChild(div);
     idNotes.push(dataName);
+    listActive.push(false);
     localStorage.setItem('dataNameNubmerLocal', dataNameNUmber);
 
     localStorage.setItem('idNotesLocal', JSON.stringify(idNotes));
+    localStorage.setItem('listActive', JSON.stringify(listActive));
 
 }
 $(document).on('click', '.notes__create', addNote);
@@ -173,12 +196,71 @@ $(document).on('keyup', '.notes__title', saveTitleLocal);
 
 //save text
 const saveText = function() {
-    let contentIndex = idNotes.indexOf(this.dataset.content);
+    let contentIndex = idNotes.indexOf(this.dataset.text);
     notesContent[contentIndex] = this.value;
     localStorage.setItem('notesText', JSON.stringify(notesContent));
 }
 $(document).on('keyup', '.notes__text', saveText);
+let dataItemNumber = 1;
+if (localStorage.setItem('dataItemNumber', dataItemNumber)) {
+    dataItemNumber = localStorage.setItem('dataItemNumber', dataItemNumber);
+}
+let dataContent;
+const list = function(e) {
+    // listActive = true;
+    let noteIndex = idNotes.indexOf(this.dataset.list);
+    dataContent = this.dataset.list;
+    listActive[noteIndex] = true;
+    localStorage.setItem('listActive', JSON.stringify(listActive));
+    if (listActive[noteIndex] === true) {
+        document.querySelector(`[data-content='${dataContent}']`).innerHTML = `<textarea type="text" class="notes__title" data-title="${dataContent}" placeholder='Title'></textarea>
+        <ul data-lists='${dataContent}'>
+        <li data-item-li="${dataItemNumber}"><input type="text" class=notes__list-item data-item="${dataItemNumber}" value=''></li>
+    </ul>`;
 
+    }
+
+}
+
+$(document).on('click', '.notes__mode--list', list);
+let noteNameId;
+
+function getNotesName() {
+    noteNameId = this.dataset.note;
+}
+$(document).on('click', '.notes', getNotesName);
+const listInput = function(e) {
+    let listIndex = idNotes.indexOf(noteNameId);
+
+    const dataItem = this.dataset.item;
+    const valueItem = document.querySelector(`[data-item='${dataItem}']`).value;
+    const itemText = document.querySelector(`[data-item='${dataItem}']`);
+    itemText.setAttribute('value', valueItem);
+    const ulSave = document.querySelector(`[data-lists='${noteNameId}']`);
+    listContentSave[listIndex] = ulSave.innerHTML;
+    const enter = e.keyCode;
+    if (enter === 13) {
+        dataItemNumber++;
+        const li = document.createElement('li');
+        li.setAttribute('data-item-li', dataItemNumber);
+        li.innerHTML = `<input type="text" class=notes__list-item data-item="${dataItemNumber}">`;
+        document.querySelector(`[data-lists='${noteNameId}']`).appendChild(li);
+        listContentSave[listIndex] = ulSave.innerHTML;
+        localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
+        localStorage.setItem('dataItemNumber', dataItemNumber);
+
+    }
+
+    const item = document.querySelector(`[data-item='${dataItem}']`);
+    const itemLi = document.querySelector(`[data-item-li='${dataItem}']`);
+    if (enter === 8 && item.value === '') {
+        itemLi.remove();
+        listContentSave[listIndex] = ulSave.innerHTML;
+        localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
+    }
+    localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
+}
+$(document).on('keyup', `[data-item]`, listInput);
 
 //delete note
 const deleteNote = function() {
@@ -191,11 +273,15 @@ const deleteNote = function() {
     notesY.splice(closeIndex, 1);
     notesContent.splice(closeIndex, 1);
     notesTitle.splice(closeIndex, 1);
+    listActive.splice(closeIndex, 1);
+    listContentSave.splice(closeIndex, 1);
     localStorage.setItem('idNotesLocal', JSON.stringify(idNotes));
     localStorage.setItem('notesPositionX', JSON.stringify(notesX));
     localStorage.setItem('notesPositionY', JSON.stringify(notesY));
     localStorage.setItem('notesText', JSON.stringify(notesContent));
     localStorage.setItem('notesTitle', JSON.stringify(notesTitle));
+    localStorage.setItem('listActive', JSON.stringify(listActive));
+    localStorage.setItem('listContentSave', JSON.stringify(listContentSave));
 
     //reset dataNameNUmber
     if (idNotes.length === 0) {
