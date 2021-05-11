@@ -324,8 +324,10 @@ const deleteNote = function() {
     if (idNotes.length === 0) {
         dataNameNUmber = 0;
         dataItemNumber = 0;
+        focusNumber = 0;
         localStorage.setItem('dataNameNubmerLocal', dataNameNUmber);
         localStorage.setItem('dataItemNumber', dataItemNumber);
+        localStorage.setItem('focusNumber', focusNumber);
     }
 }
 $(document).on('click', '.notes__close-box', deleteNote);
