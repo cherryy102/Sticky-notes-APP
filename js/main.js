@@ -216,18 +216,21 @@ const dataItemNumberPlus = () => {
 }
 $(document).on('keydown', `[data-item]`, dataItemNumberPlus);
 //list mode 
+let focusNumber = 0;
 const addListmode = function() {
     dataItemNumber++;
     let noteIndexList = idNotes.indexOf(this.dataset.list);
-    if (notesContent[noteIndexList] === '' || notesContent.length === 0) {
+    if (notesContent[noteIndexList] === '' || notesContent.length === 0 || notesContent[noteIndexList] === undefined) {
         let dataContent = this.dataset.list;
         listActive[noteIndexList] = true;
 
         if (listActive[noteIndexList] === true) {
             document.querySelector(`[data-content='${dataContent}']`).innerHTML = `<textarea type="text" class="notes__title" data-title="${dataContent}" placeholder='Title'></textarea>
             <ul data-lists='${dataContent}'>
-            <li data-item-li="${dataItemNumber}"><input type="text" class=notes__list-item data-item="${dataItemNumber}" value=''></li>
+           
+            <li data-item-li="${dataItemNumber}"><input type="text" class=notes__list-item data-item="${dataItemNumber}" value='' data-focus='${focusNumber}'></li>
         </ul>`;
+            // <li data-item-li="${dataItemNumber}"><input type="text" class=notes__list-item data-item="${dataItemNumber}" value='' data-foxus='${focusNumber}'></li>
             localStorage.setItem('listActive', JSON.stringify(listActive));
             localStorage.setItem('dataItemNumber', dataItemNumber);
         }
@@ -245,16 +248,20 @@ const addNextItemToList = function(e) {
         const ulSave = document.querySelector(`[data-lists='${noteNameId}']`);
         listContentSave[listIndex] = ulSave.innerHTML;
         const enter = e.keyCode;
+        let focus = this.dataset.focus;
+        focus = Number(focus);
         if (enter === 13) {
             dataItemNumber++;
+            focusNumber++;
             const li = document.createElement('li');
             li.setAttribute('data-item-li', dataItemNumber);
-            li.innerHTML = `<input type="text" class='notes__list-item' data-item="${dataItemNumber}">`;
+            li.innerHTML = `<input type="text" class='notes__list-item' data-item="${dataItemNumber}" data-focus='${focusNumber}'>`;
             document.querySelector(`[data-lists='${noteNameId}']`).appendChild(li);
+
             listContentSave[listIndex] = ulSave.innerHTML;
             localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
             localStorage.setItem('dataItemNumber', dataItemNumber);
-
+            document.querySelector(`[data-focus='${focus + 1}']`).focus();
         }
 
         localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
@@ -264,6 +271,8 @@ const addNextItemToList = function(e) {
 const removeListItem = function(e) {
     const dataItemRemove = this.dataset.item;
     const item = document.querySelector(`[data-item='${dataItemRemove}']`);
+    let focusRemove = this.dataset.focus;
+    focusRemove = Number(focusRemove);
     if (e.keyCode === 8 && item.value === '') {
         let listIndexRemove = idNotes.indexOf(noteNameId);
         const itemLi = document.querySelector(`[data-item-li='${dataItemRemove}']`);
@@ -273,6 +282,10 @@ const removeListItem = function(e) {
         listContentSave[listIndexRemove] = ulSave.innerHTML;
         localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
         const li = document.querySelectorAll(`[data-lists='${noteNameId}'] [data-item-li]`);
+        if (li.length > 0) {
+            document.querySelector(`[data-focus='${focusRemove - 1}']`).focus();
+        }
+
         if (li.length === 0) {
             notesContent.innerHTML = `<textarea  class="notes__title" data-title="${noteNameId}" placeholder='Title'></textarea><textarea class="notes__text" data-text="${noteNameId}"  placeholder='Text'></textarea>`;
             listActive[listIndexRemove] = false;
