@@ -217,8 +217,12 @@ const dataItemNumberPlus = () => {
 $(document).on('keydown', `[data-item]`, dataItemNumberPlus);
 //list mode 
 let focusNumber = 0;
+if (localStorage.getItem('focusNumber')) {
+    focusNumber = localStorage.getItem('focusNumber');
+}
 const addListmode = function() {
     dataItemNumber++;
+    focusNumber++;
     let noteIndexList = idNotes.indexOf(this.dataset.list);
     if (notesContent[noteIndexList] === '' || notesContent.length === 0 || notesContent[noteIndexList] === undefined) {
         let dataContent = this.dataset.list;
@@ -233,6 +237,7 @@ const addListmode = function() {
             // <li data-item-li="${dataItemNumber}"><input type="text" class=notes__list-item data-item="${dataItemNumber}" value='' data-foxus='${focusNumber}'></li>
             localStorage.setItem('listActive', JSON.stringify(listActive));
             localStorage.setItem('dataItemNumber', dataItemNumber);
+            localStorage.setItem('focusNumber', focusNumber);
         }
     }
 }
@@ -261,6 +266,7 @@ const addNextItemToList = function(e) {
             listContentSave[listIndex] = ulSave.innerHTML;
             localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
             localStorage.setItem('dataItemNumber', dataItemNumber);
+            localStorage.setItem('focusNumber', focusNumber);
             document.querySelector(`[data-focus='${focus + 1}']`).focus();
         }
 
