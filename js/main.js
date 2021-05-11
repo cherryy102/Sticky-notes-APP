@@ -234,7 +234,6 @@ const addListmode = function() {
            
             <li data-item-li="${dataItemNumber}"><input type="text" class=notes__list-item data-item="${dataItemNumber}" value='' data-focus='${focusNumber}'></li>
         </ul>`;
-            // <li data-item-li="${dataItemNumber}"><input type="text" class=notes__list-item data-item="${dataItemNumber}" value='' data-foxus='${focusNumber}'></li>
             localStorage.setItem('listActive', JSON.stringify(listActive));
             localStorage.setItem('dataItemNumber', dataItemNumber);
             localStorage.setItem('focusNumber', focusNumber);
