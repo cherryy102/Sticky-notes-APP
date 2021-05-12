@@ -62,7 +62,7 @@ let insertY;
 let moveNote;
 let dataNote;
 let index;
-//start notes position
+//start notes position from localStorage
 if (JSON.parse(localStorage.getItem('notesPositionX'))) {
     savePositionX = JSON.parse(localStorage.getItem('notesPositionX'));
     savePositionY = JSON.parse(localStorage.getItem('notesPositionY'))
@@ -73,7 +73,7 @@ if (JSON.parse(localStorage.getItem('notesPositionX'))) {
         notesY[i] = savePositionY[i];
     }
 }
-//list content 
+//list content from localStorage
 if (JSON.parse(localStorage.getItem('listContentSave'))) {
     listContentSave = JSON.parse(localStorage.getItem('listContentSave'));
     for (let i = 0; i < idNotes.length; i++) {
@@ -86,7 +86,7 @@ if (JSON.parse(localStorage.getItem('listContentSave'))) {
 
     }
 }
-//start title of notes
+//start title of notes from localStorage
 
 if (JSON.parse(localStorage.getItem('notesTitle'))) {
     saveTitle = JSON.parse(localStorage.getItem('notesTitle'));
@@ -95,7 +95,7 @@ if (JSON.parse(localStorage.getItem('notesTitle'))) {
     }
 }
 
-//start contents of notes
+//start contents of notes from localStorage
 if (JSON.parse(localStorage.getItem('notesText'))) {
     saveContent = JSON.parse(localStorage.getItem('notesText'));
     for (let i = 0; i < saveContent.length; i++) {
@@ -106,7 +106,7 @@ if (JSON.parse(localStorage.getItem('notesText'))) {
     }
 }
 
-//save number to lcoal
+//dataNameNUmber from localStorage
 if (localStorage.getItem('dataNameNubmerLocal')) {
     dataNameNUmber = localStorage.getItem('dataNameNubmerLocal');
 
@@ -198,35 +198,23 @@ const saveText = function() {
         notesContent[contentIndex] = this.value;
         localStorage.setItem('notesText', JSON.stringify(notesContent));
     }
-
 }
 $(document).on('keyup', '.notes__text', saveText);
-let noteNameId;
+
 //get note names
+let noteNameId;
+
 function getNotesName() {
-
     noteNameId = this.dataset.note;
-    console.log(noteNameId);
-
 }
 $(document).on('mousedown', '.notes', getNotesName);
-//declare id of data-item
-// let dataItemNumber = 1;
+
+//start value from localStorage of autoMoveCursorNumber
 if (JSON.parse(localStorage.getItem('autoMoveCursorNumber'))) {
     autoMoveCursorNumber = JSON.parse(localStorage.getItem('autoMoveCursorNumber'));
 }
-// const dataItemNumberPlus = () => {
-//     dataItemNumber++;
-// }
-// $(document).on('keydown', `[data-item]`, dataItemNumberPlus);
-//list mode 
-// let focusNumber = 0;
-// if (localStorage.getItem('focusNumber')) {
-//     focusNumber = localStorage.getItem('focusNumber');
-// }
+//change to list mode
 const addListmode = function() {
-    // dataItemNumber++;
-    // focusNumber++;
     let noteIndexList = idNotes.indexOf(this.dataset.list);
     autoMoveCursorNumber[noteIndexList] = 1;
     if (notesContent[noteIndexList] === '' || notesContent.length === 0 || notesContent[noteIndexList] === undefined) {
@@ -241,53 +229,46 @@ const addListmode = function() {
         </ul>`;
             localStorage.setItem('listActive', JSON.stringify(listActive));
             localStorage.setItem('autoMoveCursorNumber', JSON.stringify(autoMoveCursorNumber));
-            // localStorage.setItem('dataItemNumber', dataItemNumber);
-            // localStorage.setItem('focusNumber', focusNumber);
         }
     }
 }
 
 $(document).on('click', '.notes__mode--list', addListmode);
-//add next list item
+
+//add new list item
 const addNextItemToList = function(e) {
+    let listIndex = idNotes.indexOf(noteNameId);
+    const dataItem = this.dataset.item;
+    const valueItem = document.querySelector(`[data-item='${dataItem}']`).value;
+    const itemText = document.querySelector(`[data-item='${dataItem}']`);
+    itemText.setAttribute('value', valueItem);
+    const ulSave = document.querySelector(`[data-lists='${noteNameId}']`);
+    listContentSave[listIndex] = ulSave.innerHTML;
+    const enter = e.keyCode;
+    let focus = this.dataset.focus;
+    focus = Number(focus);
+    if (enter === 13) {
+        autoMoveCursorNumber[listIndex] += 1;
+        const li = document.createElement('li');
+        li.setAttribute('data-item-li', autoMoveCursorNumber[listIndex]);
+        li.innerHTML = `<input type="text" class='notes__list-item' data-item="${autoMoveCursorNumber[listIndex]}" data-focus='${autoMoveCursorNumber[listIndex]}'>`;
+        document.querySelector(`[data-lists='${noteNameId}']`).appendChild(li);
 
-        let listIndex = idNotes.indexOf(noteNameId);
-
-        const dataItem = this.dataset.item;
-        const valueItem = document.querySelector(`[data-item='${dataItem}']`).value;
-        const itemText = document.querySelector(`[data-item='${dataItem}']`);
-        itemText.setAttribute('value', valueItem);
-        const ulSave = document.querySelector(`[data-lists='${noteNameId}']`);
         listContentSave[listIndex] = ulSave.innerHTML;
-        const enter = e.keyCode;
-        let focus = this.dataset.focus;
-        focus = Number(focus);
-        if (enter === 13) {
-            // dataItemNumber++;
-            // focusNumber++;
-            autoMoveCursorNumber[listIndex] += 1;
-            const li = document.createElement('li');
-            li.setAttribute('data-item-li', autoMoveCursorNumber[listIndex]);
-            li.innerHTML = `<input type="text" class='notes__list-item' data-item="${autoMoveCursorNumber[listIndex]}" data-focus='${autoMoveCursorNumber[listIndex]}'>`;
-            document.querySelector(`[data-lists='${noteNameId}']`).appendChild(li);
-
-            listContentSave[listIndex] = ulSave.innerHTML;
-            localStorage.setItem('listContentSave', JSON.stringify(listContentSave));
-            localStorage.setItem('autoMoveCursorNumber', JSON.stringify(autoMoveCursorNumber));
-            // localStorage.setItem('dataItemNumber', dataItemNumber);
-            // localStorage.setItem('focusNumber', focusNumber);
-
-            while (document.querySelector(`[data-lists='${noteNameId}'] [data-focus='${focus + 1}']`) === null) {
-                ++focus;
-            }
-            document.querySelector(`[data-lists='${noteNameId}'] [data-focus='${focus + 1}']`).focus();
-        }
-
         localStorage.setItem('listContentSave', JSON.stringify(listContentSave));
         localStorage.setItem('autoMoveCursorNumber', JSON.stringify(autoMoveCursorNumber));
-        // localStorage.setItem('dataItemNumber', dataItemNumber);
+        //cursor go to next input
+        while (document.querySelector(`[data-lists='${noteNameId}'] [data-focus='${focus + 1}']`) === null) {
+            ++focus;
+        }
+        document.querySelector(`[data-lists='${noteNameId}'] [data-focus='${focus + 1}']`).focus();
     }
-    //remove list item
+
+    localStorage.setItem('listContentSave', JSON.stringify(listContentSave));
+    localStorage.setItem('autoMoveCursorNumber', JSON.stringify(autoMoveCursorNumber));
+}
+$(document).on('keyup', `[data-item]`, addNextItemToList);
+//remove list item
 const removeListItem = function(e) {
 
     const dataItemRemove = this.dataset.item;
@@ -307,7 +288,7 @@ const removeListItem = function(e) {
         const li = document.querySelectorAll(`[data-lists='${noteNameId}'] [data-item-li]`);
 
         if (li.length >= 1) {
-
+            //cursor go to prev input
             if (focusRemove != firstElementData) {
                 while (document.querySelector(`[data-lists='${noteNameId}'] [data-focus='${focusRemove - 1}']`) === null) {
                     --focusRemove;
@@ -324,14 +305,14 @@ const removeListItem = function(e) {
         }
     }
 }
-$(document).on('keyup', `[data-item]`, addNextItemToList);
+
 $(document).on('keyup', `[data-item]`, removeListItem);
 //delete note
 const deleteNote = function() {
     let dataClose = this.dataset.close;
     let closeIndex = idNotes.indexOf(dataClose);
     const removeDiv = document.querySelector(`[data-note='${dataClose}']`);
-    document.querySelector('.box').removeChild(removeDiv);
+    removeDiv.remove();
     idNotes.splice(closeIndex, 1);
     notesX.splice(closeIndex, 1);
     notesY.splice(closeIndex, 1);
@@ -348,14 +329,10 @@ const deleteNote = function() {
     localStorage.setItem('listActive', JSON.stringify(listActive));
     localStorage.setItem('listContentSave', JSON.stringify(listContentSave));
     localStorage.setItem('autoMoveCursorNumber', JSON.stringify(autoMoveCursorNumber));
-    //reset dataNameNUmber
+    //reset variables
     if (idNotes.length === 0) {
         dataNameNUmber = 0;
-        dataItemNumber = 0;
-        focusNumber = 0;
         localStorage.setItem('dataNameNubmerLocal', dataNameNUmber);
-        // localStorage.setItem('dataItemNumber', dataItemNumber);
-        // localStorage.setItem('focusNumber', focusNumber);
     }
 }
 $(document).on('click', '.notes__close-box', deleteNote);
