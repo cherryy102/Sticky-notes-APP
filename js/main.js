@@ -239,8 +239,8 @@ $(document).on('click', '.notes__mode--list', addListmode);
 const addNextItemToList = function(e) {
     let listIndex = idNotes.indexOf(noteNameId);
     const dataItem = this.dataset.item;
-    const valueItem = document.querySelector(`[data-item='${dataItem}']`).value;
-    const itemText = document.querySelector(`[data-item='${dataItem}']`);
+    const valueItem = document.querySelector(`[data-lists='${noteNameId}'] [data-item='${dataItem}']`).value;
+    const itemText = document.querySelector(`[data-lists='${noteNameId}'] [data-item='${dataItem}']`);
     itemText.setAttribute('value', valueItem);
     const ulSave = document.querySelector(`[data-lists='${noteNameId}']`);
     listContentSave[listIndex] = ulSave.innerHTML;
