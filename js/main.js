@@ -253,7 +253,6 @@ const addNextItemToList = function(e) {
         li.setAttribute('data-item-li', autoMoveCursorNumber[listIndex]);
         li.innerHTML = `<input type="text" class='notes__list-item' data-item="${autoMoveCursorNumber[listIndex]}" data-focus='${autoMoveCursorNumber[listIndex]}'>`;
         document.querySelector(`[data-lists='${noteNameId}']`).appendChild(li);
-
         listContentSave[listIndex] = ulSave.innerHTML;
         localStorage.setItem('listContentSave', JSON.stringify(listContentSave));
         localStorage.setItem('autoMoveCursorNumber', JSON.stringify(autoMoveCursorNumber));
@@ -263,14 +262,13 @@ const addNextItemToList = function(e) {
         }
         document.querySelector(`[data-lists='${noteNameId}'] [data-focus='${focus + 1}']`).focus();
     }
-
+    listContentSave[listIndex] = ulSave.innerHTML;
     localStorage.setItem('listContentSave', JSON.stringify(listContentSave));
     localStorage.setItem('autoMoveCursorNumber', JSON.stringify(autoMoveCursorNumber));
 }
 $(document).on('keyup', `[data-item]`, addNextItemToList);
 //remove list item
 const removeListItem = function(e) {
-
     const dataItemRemove = this.dataset.item;
     const item = document.querySelector(`[data-item='${dataItemRemove}']`);
     let focusRemove = this.dataset.focus;
@@ -285,7 +283,7 @@ const removeListItem = function(e) {
         itemLi.remove();
         listContentSave[listIndexRemove] = ulSave.innerHTML;
         localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
-        const li = document.querySelectorAll(`[data-lists='${noteNameId}'] [data-item-li]`);
+        const li = document.querySelectorAll(`[data-lists='${noteNameId}'] li`);
 
         if (li.length >= 1) {
             //cursor go to prev input
