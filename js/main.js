@@ -35,9 +35,11 @@ if (JSON.parse(localStorage.getItem('idNotesLocal'))) {
     </div>
     <div class="notes__content" data-content="${idNotes[i]}"><textarea  class="notes__title" data-title="${idNotes[i]}" placeholder='Title'></textarea><textarea class="notes__text" data-text="${idNotes[i]}"  placeholder='Text'></textarea></div>
     <div class="notes__bottom-bar">
-        <div class="notes__mode notes__mode--bold"><i class="fas fa-bold"></i></div>
-        <div class="notes__mode notes__mode--cursive"><i class="fas fa-italic"></i></div>
-        <div class="notes__mode notes__mode--list" data-list="${idNotes[i]}"><i class="fas fa-list-ul"></i></div>
+    <div class="notes__mode notes__mode--bold" title="Bold"><i class="fas fa-bold"></i></div>
+    <div class="notes__mode notes__mode--cursive" title="Italic"><i class="fas fa-italic"></i></div>
+    <div class="notes__mode notes__mode--strikethrough" title="Strikethrough"><i class="fas fa-strikethrough" ></i>
+    </div>
+    <div class="notes__mode notes__mode--list" title="List"  data-list="${idNotes[i]}"><i class="fas fa-list-ul"></i></div>
     </div>`;
         document.querySelector('.box').appendChild(startDiv);
     }
@@ -139,9 +141,11 @@ const addNote = function() {
 </div>
 <div class="notes__content" data-content="${dataName}"><textarea class="notes__title" data-title="${dataName}" placeholder='Title'></textarea><textarea class="notes__text" data-text="${dataName}" placeholder='Text'></textarea></div>
 <div class="notes__bottom-bar">
-    <div class="notes__mode notes__mode--bold"><i class="fas fa-bold"></i></div>
-    <div class="notes__mode notes__mode--cursive"><i class="fas fa-italic"></i></div>
-    <div class="notes__mode notes__mode--list" data-list="${dataName}"><i class="fas fa-list-ul" ></i></div>
+<div class="notes__mode notes__mode--bold" title="Bold"><i class="fas fa-bold"></i></div>
+<div class="notes__mode notes__mode--cursive" title="Italic"><i class="fas fa-italic"></i></div>
+<div class="notes__mode notes__mode--strikethrough" title="Strikethrough"><i class="fas fa-strikethrough" ></i>
+</div>
+<div class="notes__mode notes__mode--list" title="List"  data-list="${dataName}"><i class="fas fa-list-ul"></i></div>
 </div>`
     document.querySelector('.box').appendChild(div);
     idNotes.push(dataName);
@@ -322,6 +326,9 @@ const changeFontStyle = function(style) {
             case 'bold':
                 document.querySelector(`[data-text='${noteNameId}']`).classList.toggle('notes--bold');
                 break;
+            case 'strikethrough':
+                document.querySelector(`[data-text='${noteNameId}']`).classList.toggle('notes--strikethrough');
+                break;
         }
 
     }
@@ -337,6 +344,11 @@ const changeFontStyle = function(style) {
                 listContentSave[styleIndex] = document.querySelector(`[data-lists='${noteNameId}']`).innerHTML;
                 localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
                 break;
+            case 'strikethrough':
+                document.querySelector(`[data-lists='${noteNameId}'] [data-item='${dataItemID}']`).classList.toggle('notes--strikethrough');
+                listContentSave[styleIndex] = document.querySelector(`[data-lists='${noteNameId}']`).innerHTML;
+                localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
+                break;
         }
 
     }
@@ -347,6 +359,10 @@ $(document).on('click', '.notes__mode--bold', () => {
 $(document).on('click', '.notes__mode--cursive', () => {
     changeFontStyle('italic');
 })
+$(document).on('click', '.notes__mode--strikethrough', () => {
+    changeFontStyle('strikethrough');
+})
+
 
 //delete note
 const deleteNote = function() {
