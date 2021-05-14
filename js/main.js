@@ -203,11 +203,17 @@ $(document).on('keyup', '.notes__text', saveText);
 
 //get note names
 let noteNameId;
+let dataItemID;
 
 function getNotesName() {
     noteNameId = this.dataset.note;
 }
 $(document).on('mousedown', '.notes', getNotesName);
+//get data-item
+function getDataItem() {
+    dataItemID = this.dataset.item;
+}
+$(document).on('mousedown', '[data-item]', getDataItem);
 
 //start value from localStorage of autoMoveCursorNumber
 if (JSON.parse(localStorage.getItem('autoMoveCursorNumber'))) {
@@ -303,8 +309,45 @@ const removeListItem = function(e) {
         }
     }
 }
-
 $(document).on('keyup', `[data-item]`, removeListItem);
+//change font style - bold or cursive
+const changeFontStyle = function(style) {
+    const styleIndex = idNotes.indexOf(noteNameId);
+
+    if (listActive[styleIndex] === false) {
+        switch (style) {
+            case 'italic':
+                document.querySelector(`[data-text='${noteNameId}']`).classList.toggle('notes--cursive');
+                break;
+            case 'bold':
+                document.querySelector(`[data-text='${noteNameId}']`).classList.toggle('notes--bold');
+                break;
+        }
+
+    }
+    if (listActive[styleIndex] === true && dataItemID != undefined) {
+        switch (style) {
+            case 'italic':
+                document.querySelector(`[data-lists='${noteNameId}'] [data-item='${dataItemID}']`).classList.toggle('notes--cursive');
+                listContentSave[styleIndex] = document.querySelector(`[data-lists='${noteNameId}']`).innerHTML;
+                localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
+                break;
+            case 'bold':
+                document.querySelector(`[data-lists='${noteNameId}'] [data-item='${dataItemID}']`).classList.toggle('notes--bold');
+                listContentSave[styleIndex] = document.querySelector(`[data-lists='${noteNameId}']`).innerHTML;
+                localStorage.setItem('listContentSave', JSON.stringify(listContentSave))
+                break;
+        }
+
+    }
+}
+$(document).on('click', '.notes__mode--bold', () => {
+    changeFontStyle('bold');
+})
+$(document).on('click', '.notes__mode--cursive', () => {
+    changeFontStyle('italic');
+})
+
 //delete note
 const deleteNote = function() {
     let dataClose = this.dataset.close;
