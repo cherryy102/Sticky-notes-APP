@@ -178,6 +178,14 @@ body {
   background-color: #444444;
 }
 
+.notes--bold {
+  font-weight: bold;
+}
+
+.notes--cursive {
+  font-style: italic;
+}
+
 .add-note {
   position: fixed;
   top: 20px;
